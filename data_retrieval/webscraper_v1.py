@@ -3,12 +3,12 @@ from data_retrieval.url_setup import UrlSetUp
 
 filename = "practice-nba-games.csv"
 
-startMonth = 10
-startDay = 25
+startMonth = 9
+startDay = 1
 startYear = 2016
 
-endMonth = 4
-endDay = 13
+endMonth = 10
+endDay = 16
 endYear = 2017
 
 while startMonth != endMonth or startDay != endDay or startYear != endYear:

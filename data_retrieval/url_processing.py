@@ -1,11 +1,13 @@
 from bs4 import BeautifulSoup as bSoup
 from urllib.request import urlopen as ureq
+from urllib.error import HTTPError as error
 from pathlib import Path
 
 
 class UrlProcessing:
 
     def __init__(self, url, file_name):
+        self.retry_count = 0
         self.url = url
         self.file_name = file_name
         self.page_soup = self.prepare_url()
@@ -16,10 +18,18 @@ class UrlProcessing:
         self.f.close()
 
     def prepare_url(self):
-        u_client = ureq(self.url)
-        page_html = u_client.read()
-        u_client.close()
-        return bSoup(page_html, "html.parser")
+        try:
+            u_client = ureq(self.url)
+            page_html = u_client.read()
+            u_client.close()
+            return bSoup(page_html, "html.parser")
+        except error:
+            self.retry_count += 1
+            if self.retry_count > 3:
+                raise error('Could not access url: ' + self.url)
+            else:
+                self.prepare_url()
+
 
     def prepare_file(self):
         file = Path("./" + self.file_name)
