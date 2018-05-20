@@ -4,7 +4,7 @@ import numpy as np
 
 # Main load functions
 def load_games(train_size=100, test_size=40):
-    filename = 'practice-nba-games.csv'
+    filename = 'C:\\Users\\Evan\\Desktop\\CodingStuff\\Projects\\gitprojects\\basketball-game-prediction\\data_retrieval\\practice-nba-games.csv'
     data_set = np.genfromtxt(filename, delimiter=',')
     train_set, test_set = split_dataset(data_set, train_size, test_size)
     return train_set, test_set
@@ -17,7 +17,7 @@ def split_dataset(data_set, train_size, test_size):
     """
     # Generate random indices without replacement, to make train and test sets disjoint
     rand_indices = np.random.choice(data_set.shape[0], train_size+test_size, replace=False)
-    feature_end = data_set.shape[1]
+    feature_end = data_set.shape[1] - 1
     output_location = feature_end
     feature_offset = 0
 

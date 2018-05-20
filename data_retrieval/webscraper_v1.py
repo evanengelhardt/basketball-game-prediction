@@ -3,9 +3,10 @@ from data_retrieval.url_setup import UrlSetUp
 
 filename = "practice-nba-games.csv"
 
-startMonth = 9
-startDay = 1
-startYear = 2016
+# All of the 15-16 and 16-17 seasons
+startMonth = 10
+startDay = 27
+startYear = 2015
 
 endMonth = 10
 endDay = 16

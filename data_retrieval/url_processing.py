@@ -51,9 +51,9 @@ class UrlProcessing:
             self.find_stats(home_container.td.a["href"])
             winner_container = container.findAll("tr", {"class" : "winner"})[0]
             if winner_container == visitor_container:
-                self.f.write("v\n")
+                self.f.write("0\n")
             else:
-                self.f.write("h\n")
+                self.f.write("1\n")
         return
 
     def find_stats(self, team_url):
