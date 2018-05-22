@@ -5,11 +5,11 @@ filename = "practice-nba-games.csv"
 
 # All of the 15-16 and 16-17 seasons
 startMonth = 10
-startDay = 27
-startYear = 2015
+startDay = 30
+startYear = 2012
 
-endMonth = 10
-endDay = 16
+endMonth = 4
+endDay = 14
 endYear = 2017
 
 while startMonth != endMonth or startDay != endDay or startYear != endYear:

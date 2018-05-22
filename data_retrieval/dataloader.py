@@ -35,11 +35,11 @@ def split_dataset(data_set, train_size, test_size):
         if maxval > 0:
             x_train[:, ii] = np.divide(x_train[:, ii], maxval)
             x_test[:, ii] = np.divide(x_test[:, ii], maxval)
-    """
+
 
     # Add a column of ones; done after to avoid modifying entire data_set
     x_train = np.hstack((x_train, np.ones((x_train.shape[0], 1))))
     x_test = np.hstack((x_test, np.ones((x_test.shape[0], 1))))
-
+    """
     return (x_train, y_train), (x_test, y_test)
 

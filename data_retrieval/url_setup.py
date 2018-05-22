@@ -16,6 +16,9 @@ class UrlSetUp:
         if self.month > 12:
             self.month = 1
             self.year += 1
+        if self.month == 4 and self.day == 15:
+            self.month = 10
+            print("Starting Season: " + str(self.year))
 
     def update_url(self):
         self.newUrl += '?month=' + str(self.month) + '&day=' + str(self.day) + '&year=' + str(self.year)

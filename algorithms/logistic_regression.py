@@ -23,32 +23,35 @@ class LogisticRegression:
         est_w = [init_wgt for i in range(len(x_train[0]))]
 
         for epoch in range(epochs):
+            print("Epoch: " + str(epoch))
             # create random order for testing
             random_order = list(range(len(x_train)))
             np.random.shuffle(random_order)
-            sample_count = 0
             for i in random_order:
-                if sample_count < sample_size:
+                if not np.isnan(x_train[i][0]):
                     y_est = self.estimation_helper(x_train[i], est_w)
                     err = y_est - y_train[i]
 
                     for n in range(len(x_train[i])):
                         est_w[n] -= learn_step * err * x_train[i][n]
-
-                    sample_count += 1
                 else:
-                    break
+                    print("Bad data, skipping set")
+
         return est_w
 
     def estimation_helper(self, data_point, curr_wgt):
         y_est = 0
         for i in range(len(data_point)):
             y_est += data_point[i]*curr_wgt[i]
+
         return self.sigmoid(y_est)
 
-    def sigmoid(self, var):
-        if type(var) is list:
-            var[var < -100] = -100
-            var[var > 100] = 100
+    def sigmoid(self, xvec):
+        if type(xvec) is list:
+            xvec[xvec < -100] = -100
 
-        return 1.0 / (1.0 + np.exp(np.negative(var)))
+        vecsig = 1.0 / (1.0 + np.exp(np.negative(xvec)))
+
+        if np.isnan(vecsig):
+            print(xvec)
+        return vecsig

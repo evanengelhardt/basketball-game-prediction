@@ -11,11 +11,12 @@ class UrlProcessing:
         self.url = url
         self.file_name = file_name
         self.page_soup = self.prepare_url()
-        self.f = self.prepare_file()
-        self.team_stat_tables = self.page_soup.findAll("table", {"class": "stats_table"})
-        self.process_games()
+        if self.page_soup:
+            self.f = self.prepare_file()
+            self.team_stat_tables = self.page_soup.findAll("table", {"class": "stats_table"})
+            self.process_games()
 
-        self.f.close()
+            self.f.close()
 
     def prepare_url(self):
         try:
@@ -26,10 +27,11 @@ class UrlProcessing:
         except error:
             self.retry_count += 1
             if self.retry_count > 3:
-                raise error('Could not access url: ' + self.url)
+                print("Exceeded retry count, skipping url")
+                return None
             else:
+                print("Error in preparing url, trying again")
                 self.prepare_url()
-
 
     def prepare_file(self):
         file = Path("./" + self.file_name)
@@ -63,8 +65,10 @@ class UrlProcessing:
             for team_stat_container in team_stat_containers:
                 if team_url == team_stat_container.findAll("th", {"data-stat": "team_name"})[0].a["href"]:
                     team_wl = team_stat_container.findAll("td", {"data-stat": "win_loss_pct"})[0].text
-                    team_pts_per_game = team_stat_container.findAll("td", {"data-stat": "pts_per_g"})[0].text
-                    team_opp_pts_per_game = team_stat_container.findAll("td", {"data-stat": "opp_pts_per_g"})[0].text
+                    team_pts_per_game = round(float(team_stat_container
+                                              .findAll("td", {"data-stat": "pts_per_g"})[0].text) / 100.0, 4)
+                    team_opp_pts_per_game = round(float(team_stat_container
+                                                  .findAll("td", {"data-stat": "opp_pts_per_g"})[0].text) / 100.0, 4)
 
                     self.f.write(str(team_wl) + "," + str(team_pts_per_game) + "," + str(team_opp_pts_per_game) + ",")
                     return
