@@ -10,7 +10,7 @@ class UrlProcessing:
         self.retry_count = 0
         self.url = url
         self.file_name = file_name
-        self.page_soup = self.prepare_url()
+        self.page_soup = self.prepare_url(self.url)
         if self.page_soup:
             self.f = self.prepare_file()
             self.team_stat_tables = self.page_soup.findAll("table", {"class": "stats_table"})
@@ -18,9 +18,9 @@ class UrlProcessing:
 
             self.f.close()
 
-    def prepare_url(self):
+    def prepare_url(self, url):
         try:
-            u_client = ureq(self.url)
+            u_client = ureq(url)
             page_html = u_client.read()
             u_client.close()
             return bSoup(page_html, "html.parser")

@@ -29,7 +29,7 @@ def split_dataset(data_set, train_size, test_size):
 
     # Normalize features, with maximum value in training set
     # as realistically, this would be the only possibility
-    """
+
     for ii in range(x_train.shape[1]):
         maxval = np.max(np.abs(x_train[:, ii]))
         if maxval > 0:
@@ -40,6 +40,6 @@ def split_dataset(data_set, train_size, test_size):
     # Add a column of ones; done after to avoid modifying entire data_set
     x_train = np.hstack((x_train, np.ones((x_train.shape[0], 1))))
     x_test = np.hstack((x_test, np.ones((x_test.shape[0], 1))))
-    """
+
     return (x_train, y_train), (x_test, y_test)
 

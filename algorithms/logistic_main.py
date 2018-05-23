@@ -20,7 +20,7 @@ print("Running logistic regression on file\n")
 
 log_reg = LogisticRegression()
 
-log_reg.learn(x_train=trainset[0], y_train=trainset[1], epochs=100, init_wgt=1, learn_step=.3, sample_size=2000)
+log_reg.learn(x_train=trainset[0], y_train=trainset[1], epochs=1000, init_wgt=1, learn_step=.5, sample_size=2000)
 
 np.set_printoptions(formatter={'float': lambda x: "{0:0.3f}".format(x)})
 print(log_reg.weights)
