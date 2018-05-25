@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../../../../School Stuff/Senior Year Spring Semester/B455/Assignment4Code/.idea/Assignment4Code.iml" filepath="$PROJECT_DIR$/../../../../School Stuff/Senior Year Spring Semester/B455/Assignment4Code/.idea/Assignment4Code.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/basketball-game-prediction.iml" filepath="$PROJECT_DIR$/.idea/basketball-game-prediction.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../py-cheat-sheet/.idea/py-cheat-sheet.iml" filepath="$PROJECT_DIR$/../py-cheat-sheet/.idea/py-cheat-sheet.iml" />
     </modules>
   </component>
 </project>
