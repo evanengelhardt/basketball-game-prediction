@@ -45,7 +45,12 @@ class UrlProcessing:
             else:
                 winner = (1,)
 
-            data_entry = visitor_details + home_details + winner
+            if visitor_details[0] > home_details[0]:
+                favorite = (0,)
+            else:
+                favorite = (1,)
+
+            data_entry = favorite + visitor_details + home_details + winner
 
             dbs.add_game(self.cnx, self.cursor, data_entry)
         return
