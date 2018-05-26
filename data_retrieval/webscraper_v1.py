@@ -5,12 +5,12 @@ base_url = 'https://www.basketball-reference.com/boxscores/'
 days_of_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
 
-def get_data(start_month, start_day, start_year, end_month, end_day, end_year):
+def get_data(start_month, start_day, start_year, end_month, end_day, end_year, cnx, cursor):
     while start_month != end_month or start_day != end_day or start_year != end_year:
         url_data = update_url(start_month, start_day, start_year)
         new_url = url_data[0]
         print(new_url)
-        UrlProcessing(new_url, filename)
+        UrlProcessing(new_url, cnx, cursor)
 
         start_month = url_data[1]
         start_day = url_data[2] + 1

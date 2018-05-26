@@ -2,21 +2,20 @@ from bs4 import BeautifulSoup as bSoup
 from urllib.request import urlopen as ureq
 from urllib.error import HTTPError as error
 from pathlib import Path
+from data_retrieval import database_functions as dbs
 
 
 class UrlProcessing:
 
-    def __init__(self, url, file_name):
+    def __init__(self, url, cnx, cursor):
         self.retry_count = 0
         self.url = url
-        self.file_name = file_name
+        self.cnx = cnx
+        self.cursor = cursor
         self.page_soup = self.prepare_url(self.url)
         if self.page_soup:
-            self.f = self.prepare_file()
             self.team_stat_tables = self.page_soup.findAll("table", {"class": "stats_table"})
             self.process_games()
-
-            self.f.close()
 
     def prepare_url(self, url):
         try:
@@ -33,29 +32,22 @@ class UrlProcessing:
                 print("Error in preparing url, trying again")
                 self.prepare_url()
 
-    def prepare_file(self):
-        file = Path("./" + self.file_name)
-        if file.is_file():
-            f = open(self.file_name, "a")
-        else:
-            f = open(self.file_name, "w")
-            headers = "visitor-win-pct, visitor-ppg, visitor-oppg, home-win-pct, home-ppg, home-oppg, winner\n"
-            f.write(headers)
-
-        return f
-
     def process_games(self):
         containers = self.page_soup.findAll("div", {"class": "game_summary"})
         for container in containers:
             visitor_container = container.findAll("tr")[0]
-            self.find_stats(visitor_container.td.a["href"])
+            visitor_details = self.find_stats(visitor_container.td.a["href"])
             home_container = container.findAll("tr")[1]
-            self.find_stats(home_container.td.a["href"])
+            home_details = self.find_stats(home_container.td.a["href"])
             winner_container = container.findAll("tr", {"class" : "winner"})[0]
             if winner_container == visitor_container:
-                self.f.write("0\n")
+                winner = (0,)
             else:
-                self.f.write("1\n")
+                winner = (1,)
+
+            data_entry = visitor_details + home_details + winner
+
+            dbs.add_game(self.cnx, self.cursor, data_entry)
         return
 
     def find_stats(self, team_url):
@@ -64,11 +56,10 @@ class UrlProcessing:
 
             for team_stat_container in team_stat_containers:
                 if team_url == team_stat_container.findAll("th", {"data-stat": "team_name"})[0].a["href"]:
-                    team_wl = team_stat_container.findAll("td", {"data-stat": "win_loss_pct"})[0].text
+                    team_wl = float(team_stat_container.findAll("td", {"data-stat": "win_loss_pct"})[0].text)
                     team_pts_per_game = round(float(team_stat_container
                                               .findAll("td", {"data-stat": "pts_per_g"})[0].text) / 100.0, 4)
                     team_opp_pts_per_game = round(float(team_stat_container
                                                   .findAll("td", {"data-stat": "opp_pts_per_g"})[0].text) / 100.0, 4)
 
-                    self.f.write(str(team_wl) + "," + str(team_pts_per_game) + "," + str(team_opp_pts_per_game) + ",")
-                    return
+                    return team_wl, team_pts_per_game, team_opp_pts_per_game
