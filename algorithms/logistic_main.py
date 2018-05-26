@@ -2,18 +2,21 @@ import data_retrieval.dataloader as data
 from algorithms.logistic_regression import LogisticRegression
 import numpy as np
 import evaluation.evaluation_script as eval
+import config
 
 
 
-def run_logistic_reg(train_size, test_size, epoch, learn_step, raw_data):
+def run_logistic_reg(raw_data):
 
-    train_set, test_set, favorite_set = data.load_games(train_size, test_size, raw_data)
+    train_set, test_set, favorite_set = data.load_games(config.ALGORITHM_INFO['train_size'],
+                                                        config.ALGORITH_INFO['test_size'], raw_data)
 
     print("Running logistic regression on file\n")
 
     log_reg = LogisticRegression()
 
-    log_reg.learn(x_train=train_set[0], y_train=train_set[1], epochs=epoch, init_wgt=1, learn_step=learn_step,
+    log_reg.learn(x_train=train_set[0], y_train=train_set[1], epochs=config.ALGORITHM_INFO['epochs'],
+                  init_wgt=config.ALGORITHM_INFO['init_wgt'], learn_step=config.ALGORITHM_INFO['learn_step'],
                   sample_size=2000)
 
     np.set_printoptions(formatter={'float': lambda x: "{0:0.3f}".format(x)})
