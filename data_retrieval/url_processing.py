@@ -3,19 +3,25 @@ from urllib.request import urlopen as ureq
 from urllib.error import HTTPError as error
 from data_retrieval import database_functions as dbs
 import data_retrieval.detail_webscraper as dws
+import variables as var
 
 
 class UrlProcessing:
 
-    def __init__(self, url, cnx, cursor, stat_year, team_url, opp_url):
+    def __init__(self, url, cnx, cursor, stat_year, team_url, opp_url, isComplex, isNewYear):
+        self.isComplex = isComplex
         self.retry_count = 0
         self.stat_year = stat_year
         self.url = url
         self.cnx = cnx
         self.cursor = cursor
         self.page_soup = self.prepare_url(self.url)
-        self.team_detail_soup = self.prepare_url(team_url.format(self.stat_year))
-        self.opponent_detail_soup = self.prepare_url(opp_url.format(self.stat_year))
+        if isNewYear is True or isComplex is True:
+            self.team_detail_soup = self.prepare_url(team_url.format(self.stat_year))
+            self.opponent_detail_soup = self.prepare_url(opp_url.format(self.stat_year))
+            if isNewYear is True:
+                dbs.add_season_tables(self.cnx, self.cursor, var.DB_NAME, self.stat_year)
+                self.find_season_stats()
         if self.page_soup:
             self.team_stat_tables = self.page_soup.findAll("table", {"class": "stats_table"})
             self.process_games()
@@ -55,10 +61,14 @@ class UrlProcessing:
 
             zipped = list(zip(visitor_details, home_details))
 
-            data_entry = favorite + zipped[0] + zipped[1] + zipped[2] + zipped[3] + zipped[4] + zipped[5] + zipped[6] +\
-                         zipped[7] + zipped[8] + zipped[9] + zipped[10] + zipped[11] + winner
+            if self.isComplex is True:
+                data_entry = favorite + zipped[0] + zipped[1] + zipped[2] + zipped[3] + zipped[4] + zipped[5] + \
+                    zipped[6] + zipped[7] + zipped[8] + zipped[9] + zipped[10] + zipped[11] + winner
+                dbs.add_game_comp(self.cnx, self.cursor, data_entry)
+            else:
+                data_entry = favorite + zipped[0] + zipped[1] + zipped[2] + zipped[3] + winner
+                dbs.add_game_simp(self.cnx, self.cursor, data_entry)
 
-            dbs.add_game(self.cnx, self.cursor, data_entry)
         return
 
     def find_stats(self, team_url):
@@ -74,10 +84,26 @@ class UrlProcessing:
                                               .findAll("td", {"data-stat": "pts_per_g"})[0].text) / 100.0, 4)
                     team_opp_pts_per_game = round(float(team_stat_container
                                                   .findAll("td", {"data-stat": "opp_pts_per_g"})[0].text) / 100.0, 4)
+                    if self.isComplex is True:
+                        team_details = dws.get_team_details(team_name, self.team_detail_soup, True)
+                        opp_team_details = dws.get_team_details(team_name, self.opponent_detail_soup, False)
 
-                    team_details = dws.get_team_details(team_name, self.team_detail_soup, True)
-                    opp_team_details = dws.get_team_details(team_name, self.opponent_detail_soup, False)
+                        return team_wl, team_pts_per_game, team_opp_pts_per_game, team_details[0], opp_team_details[0],\
+                               team_details[1], opp_team_details[1], team_details[2], team_details[3], team_details[4],\
+                               team_details[5], team_details[6]
+                    else:
+                        return team_name, team_wl, team_pts_per_game, team_opp_pts_per_game
 
-                    return team_wl, team_pts_per_game, team_opp_pts_per_game, team_details[0], opp_team_details[0],\
-                           team_details[1], opp_team_details[1], team_details[2], team_details[3], team_details[4],\
-                           team_details[5], team_details[6]
+    def find_season_stats(self):
+        info = self.team_detail_soup.findAll("table", {"class": "tablesaw"})[0].findAll("tbody")[0].findAll("tr")
+        for team in info:
+            team_name = team.findAll("a")[0].text
+            team_details = dws.get_team_details(team_name, self.team_detail_soup, True)
+            opp_team_details = dws.get_team_details(team_name, self.opponent_detail_soup, False)
+
+            curr_team = team_name, team_details[0], opp_team_details[0], team_details[1], opp_team_details[1],\
+                          team_details[2], team_details[3], team_details[4], team_details[5], team_details[6]
+
+            dbs.add_team(self.cnx, self.cursor, curr_team, self.stat_year)
+
+
