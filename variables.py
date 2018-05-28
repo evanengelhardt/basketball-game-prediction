@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 DB_NAME = "nba_db"
 TABLE_NAME_DETAILED = "nba_table_detail"
 TABLE_NAME_SIMP = "nba_games_"
@@ -13,6 +14,8 @@ TEAM_URL = 'https://basketball.realgm.com/nba/team-stats/{}/Averages/Team_Totals
 OPP_URL = 'https://basketball.realgm.com/nba/team-stats/{}/Averages/Opponent_Totals/Regular_Season'
 
 
+=======
+>>>>>>> f35ed5eca67069071d0a37ad441935c6d4c7a75e
 TEAM_MAP = {
     "Atlanta": "Atlanta",
     "Boston": "Boston",
@@ -71,10 +74,23 @@ ALGORITHM_INFO = {
     'init_wgt': 0
 }
 
+<<<<<<< HEAD
 LARGE_TABLE = {
     # Detailed Table Ops
     'create_main_table': (
         "CREATE TABLE `" + TABLE_NAME_DETAILED + "` ("
+=======
+DB_NAME = "nba_db"
+TABLE_NAME_COMP = "nba_table_comp"
+TABLE_NAME_SIMP = "nba_table_simple"
+SEASON_TABLE_NAME = "nba_season_"
+isComplex = False
+
+LARGE_TABLE = {
+    # Detailed Table Ops
+    'create_main_table': (
+        "CREATE TABLE `" + TABLE_NAME_COMP + "` ("
+>>>>>>> f35ed5eca67069071d0a37ad441935c6d4c7a75e
         "   `game_no` int(11) NOT NULL AUTO_INCREMENT,"
         "   `favorite` int NOT NULL,"
         "   `visitor_win_pct` float NOT NULL,"
@@ -106,7 +122,11 @@ LARGE_TABLE = {
         ") ENGINE=InnoDB"
     ),
 
+<<<<<<< HEAD
     'insert_game': ("INSERT INTO " + TABLE_NAME_DETAILED + " (favorite, visitor_win_pct, home_win_pct, visitor_ppg, home_ppg,"
+=======
+    'insert_game': ("INSERT INTO " + TABLE_NAME_COMP + " (favorite, visitor_win_pct, home_win_pct, visitor_ppg, home_ppg,"
+>>>>>>> f35ed5eca67069071d0a37ad441935c6d4c7a75e
                                                     " visitor_oppg, home_oppg, visitor_fgp, home_fgp, visitor_ofgp,"
                                                     " home_ofgp, visitor_3fgp, home_3fgp, visitor_o3fgp, home_o3fgp, "
                                                     " visitor_tov, home_tov, visitor_rpg, home_rpg, visitor_apg,"
@@ -119,13 +139,21 @@ LARGE_TABLE = {
                                                 " home_ofgp, visitor_3fgp, home_3fgp, visitor_o3fgp, home_o3fgp, "
                                                 " visitor_tov, home_tov, visitor_rpg, home_rpg, visitor_apg, "
                                                 " home_apg, visitor_spg, home_spg, visitor_bpg, home_bpg, "
+<<<<<<< HEAD
                                                 " winner FROM " + TABLE_NAME_DETAILED)
+=======
+                                                " winner FROM " + TABLE_NAME_COMP)
+>>>>>>> f35ed5eca67069071d0a37ad441935c6d4c7a75e
 
 }
 
 SIMPLE_TABLE = {
     'create_main_table': (
+<<<<<<< HEAD
         "CREATE TABLE `{}` ("
+=======
+        "CREATE TABLE `" + TABLE_NAME_SIMP + "` ("
+>>>>>>> f35ed5eca67069071d0a37ad441935c6d4c7a75e
         "   `game_no` int(11) NOT NULL AUTO_INCREMENT,"
         "   `favorite` int NOT NULL,"
         "   `visitor` varchar(25) NOT NULL,"
@@ -141,12 +169,20 @@ SIMPLE_TABLE = {
         ") ENGINE=InnoDB"
     ),
 
+<<<<<<< HEAD
     'insert_game': ("INSERT INTO {} (favorite, visitor, home, visitor_win_pct, home_win_pct,"
+=======
+    'insert_game': ("INSERT INTO " + TABLE_NAME_SIMP + " (favorite, visitor, home, visitor_win_pct, home_win_pct,"
+>>>>>>> f35ed5eca67069071d0a37ad441935c6d4c7a75e
                                                    " visitor_ppg, home_ppg, visitor_oppg, home_oppg, "
                                                     " winner) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"),
 
     'select_game': ("SELECT favorite, visitor, home, visitor_win_pct, home_win_pct, visitor_ppg, home_ppg,"
+<<<<<<< HEAD
                                                 " visitor_oppg, home_oppg, winner FROM {}")
+=======
+                                                " visitor_oppg, home_oppg, winner FROM " + TABLE_NAME_SIMP)
+>>>>>>> f35ed5eca67069071d0a37ad441935c6d4c7a75e
 }
 
 TEAM_TABLE = {

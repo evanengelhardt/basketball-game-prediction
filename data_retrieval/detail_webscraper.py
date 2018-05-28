@@ -1,11 +1,9 @@
-from bs4 import BeautifulSoup as bSoup
-from urllib.request import urlopen as ureq
-import config
-from urllib.error import HTTPError as error
+import data_retrieval.database_functions as dbf
+import variables as var
 
 
 def get_team_details(name, url_soup, isFor):
-    name = config.TEAM_MAP[name]
+    name = var.TEAM_MAP[name]
     table = url_soup.findAll("table", {"class": "tablesaw"})[0].findAll("tbody")[0].findAll("tr")
 
     for i in range(len(table)):

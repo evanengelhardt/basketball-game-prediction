@@ -1,83 +1,11 @@
 import mysql.connector as sql
 from mysql.connector import errorcode
 import config
-import data_retrieval.dataloader as dl
+import variables as var
 
 
 TABLES = {}
 # Simple Table Ops
-"""
-TABLES[config.TABLE_NAME] = (
-    "CREATE TABLE `" + config.TABLE_NAME + "` ("
-    "   `game_no` int(11) NOT NULL AUTO_INCREMENT,"
-    "   `favorite` int NOT NULL,"
-    "   `visitor_win_pct` float NOT NULL,"
-    "   `visitor_ppg` float NOT NULL,"
-    "   `visitor_oppg` float NOT NULL,"
-    "   `home_win_pct` float NOT NULL,"
-    "   `home_ppg` float NOT NULL,"
-    "   `home_oppg` float NOT NULL,"
-    "   `winner` int NOT NULL,"
-    "   PRIMARY KEY (`game_no`)"
-    ") ENGINE=InnoDB"
-)
-
-insert_game = ("INSERT INTO " + config.TABLE_NAME + " (favorite, visitor_win_pct, visitor_ppg, visitor_oppg, "
-                "home_win_pct, home_ppg, home_oppg, winner) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)")
-
-select_game = ("SELECT favorite, visitor_win_pct, visitor_ppg, visitor_oppg, home_win_pct, home_ppg, home_oppg, winner "
-               "FROM " + config.TABLE_NAME)
-"""
-
-# Detailed Table Ops
-TABLES[config.TABLE_NAME] = (
-    "CREATE TABLE `" + config.TABLE_NAME + "` ("
-    "   `game_no` int(11) NOT NULL AUTO_INCREMENT,"
-    "   `favorite` int NOT NULL,"
-    "   `visitor_win_pct` float NOT NULL,"
-    "   `home_win_pct` float NOT NULL,"
-    "   `visitor_ppg` float NOT NULL,"
-    "   `home_ppg` float NOT NULL,"
-    "   `visitor_oppg` float NOT NULL,"
-    "   `home_oppg` float NOT NULL,"
-    "   `visitor_fgp` float NOT NULL,"
-    "   `home_fgp` float NOT NULL,"
-    "   `visitor_ofgp` float NOT NULL,"
-    "   `home_ofgp` float NOT NULL,"
-    "   `visitor_3fgp` float NOT NULL,"
-    "   `home_3fgp` float NOT NULL,"
-    "   `visitor_o3fgp` float NOT NULL,"
-    "   `home_o3fgp` float NOT NULL,"
-    "   `visitor_tov` float NOT NULL,"
-    "   `home_tov` float NOT NULL,"
-    "   `visitor_rpg` float NOT NULL,"
-    "   `home_rpg` float NOT NULL,"
-    "   `visitor_apg` float NOT NULL,"
-    "   `home_apg` float NOT NULL,"
-    "   `visitor_spg` float NOT NULL,"
-    "   `home_spg` float NOT NULL,"
-    "   `visitor_bpg` float NOT NULL,"
-    "   `home_bpg` float NOT NULL,"
-    "   `winner` int NOT NULL,"
-    "   PRIMARY KEY (`game_no`)"
-    ") ENGINE=InnoDB"
-)
-
-insert_game = ("INSERT INTO " + config.TABLE_NAME + " (favorite, visitor_win_pct, home_win_pct, visitor_ppg, home_ppg,"
-                                                    " visitor_oppg, home_oppg, visitor_fgp, home_fgp, visitor_ofgp,"
-                                                    " home_ofgp, visitor_3fgp, home_3fgp, visitor_o3fgp, home_o3fgp, "
-                                                    " visitor_tov, home_tov, visitor_rpg, home_rpg, visitor_apg,"
-                                                    " home_apg, visitor_spg, home_spg, visitor_bpg, home_bpg,"
-                                                    " winner) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,"
-                                                    " %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
-
-select_game = ("SELECT favorite, visitor_win_pct, home_win_pct, visitor_ppg, home_ppg,"
-                                                " visitor_oppg, home_oppg, visitor_fgp, home_fgp, visitor_ofgp, "
-                                                " home_ofgp, visitor_3fgp, home_3fgp, visitor_o3fgp, home_o3fgp, "
-                                                " visitor_tov, home_tov, visitor_rpg, home_rpg, visitor_apg, "
-                                                " home_apg, visitor_spg, home_spg, visitor_bpg, home_bpg, "
-                                                " winner FROM " + config.TABLE_NAME)
-
 
 def connect_to_mysql(db_name=None):
     if db_name is not None:
@@ -95,30 +23,24 @@ def create_database(cursor, db_name):
         )
     except sql.Error as err:
         if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
-            print("already exists.")
+            print("database already exists.")
         else:
             print(err.msg)
 
 
-<<<<<<< Updated upstream
-def add_tables(cnx, cursor, db_name):
-    cnx.database = db_name
-=======
 def add_tables(cnx, cursor, db_name, isDetailed, year=None):
     cnx.database = db_name
     if isDetailed:
         TABLES[var.TABLE_NAME_DETAILED] = var.LARGE_TABLE['create_main_table']
     else:
         TABLES[var.TABLE_NAME_SIMP] = var.SIMPLE_TABLE['create_main_table'].format(var.TABLE_NAME_SIMP + str(year))
-
->>>>>>> Stashed changes
     for name, ddl in TABLES.items():
         try:
             print("Creating table {}: ".format(name), end='')
             cursor.execute(ddl)
         except sql.Error as err:
             if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
-                print("already exists.")
+                print("game table already exists.")
                 return False
             else:
                 print(err.msg)
@@ -127,10 +49,6 @@ def add_tables(cnx, cursor, db_name, isDetailed, year=None):
             return True
 
 
-<<<<<<< Updated upstream
-def add_game(cnx, cursor, info):
-    cursor.execute(insert_game, info)
-=======
 def add_season_tables(cnx, cursor, db_name, year):
     cnx.database = db_name
     create_sql = var.TEAM_TABLE['create_team_table'].format(var.SEASON_TABLE_NAME + str(year))
@@ -181,14 +99,12 @@ def add_team(cnx, cursor, info, year):
             return False
         else:
             print(err.msg)
-
->>>>>>> Stashed changes
     cnx.commit()
 
 
-def get_games(cnx, cursor):
-    cnx.database = config.DB_NAME
-    cursor.execute(select_game)
+def get_team(cnx, cursor, year, team):
+    cnx.database = var.DB_NAME
+    cursor.execute(var.TEAM_TABLE['select_team'].format(var.SEASON_TABLE_NAME + str(year), team))
     results = cursor.fetchall()
     return results
 
