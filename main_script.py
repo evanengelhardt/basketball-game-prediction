@@ -1,14 +1,18 @@
-import data_retrieval.data_script as data
+import data_retrieval.season_table.season_data_script as season
+import data_retrieval.detail_table.detail_data_script as detailed
 import algorithms.logistic_main as logistic
 import data_retrieval.database_functions as db
+import variables as var
 
-get_data = True
-run_algorithm = False
 
-if get_data:
-    data.run_data_script()
+if var.GET_DATA:
+    if var.TYPE_OF_TABLES is 'season':
+        season.run_data_script()
+    else:
+        detailed.run_data_script()
 
-if run_algorithm:
+
+if var.RUN_ALGO:
     cnx_dtls = db.connect_to_mysql()
     cnx = cnx_dtls[0]
     cursor = cnx_dtls[1]

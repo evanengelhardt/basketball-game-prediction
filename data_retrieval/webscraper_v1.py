@@ -22,6 +22,10 @@ def get_data(start_month, start_day, start_year, end_month, end_day, end_year, c
 
 
 def update_url(month, day, year):
+<<<<<<< Updated upstream
+=======
+    is_new_season = False
+>>>>>>> Stashed changes
     if day > days_of_month[month - 1]:
         month += 1
         day = 1
@@ -31,10 +35,18 @@ def update_url(month, day, year):
     if month == 4 and day == 15:
         month = 10
         print("Starting Season: " + str(year))
+<<<<<<< Updated upstream
 
     updated_url = base_url + '?month=' + str(month) + '&day=' + str(day) + '&year=' + str(year)
 
     return updated_url, month, day, year
+=======
+        is_new_season = True
+
+    updated_url = base_url + '?month=' + str(month) + '&day=' + str(day) + '&year=' + str(year)
+
+    return updated_url, month, day, year, is_new_season
+>>>>>>> Stashed changes
 
 
 def setup_url_details(month, year):
