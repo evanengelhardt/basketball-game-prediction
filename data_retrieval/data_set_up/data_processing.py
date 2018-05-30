@@ -1,6 +1,6 @@
-from data_retrieval import database_functions as dbs
 import global_functions as g_func
 import variables as var
+from data_retrieval.database import database_functions as dbs
 
 
 class UrlProcessing:
