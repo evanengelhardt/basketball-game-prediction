@@ -81,7 +81,8 @@ class UrlProcessing:
             dbs.add_team(self.cnx, self.cursor, curr_team, self.stat_year)
 
     def get_team_details(self, name, url_soup, is_team):
-        name = var.TEAM_MAP[name]
+        if name in var.TEAM_MAP:
+            name = var.TEAM_MAP[name]
         table = url_soup.findAll("table", {"class": "tablesaw"})[0].findAll("tbody")[0].findAll("tr")
 
         for i in range(len(table)):

@@ -1,5 +1,6 @@
 from __future__ import division  # floating point division
 import numpy as np
+from main import variables as var
 
 
 
@@ -19,7 +20,7 @@ def split_dataset(data_set, train_size, test_size):
     rand_indices = np.random.choice(data_set.shape[0], train_size+test_size, replace=False)
     feature_end = data_set.shape[1] - 1
     output_location = feature_end
-    feature_offset = 1
+    feature_offset = var.ALGORITHM_INFO['feature_offset']
 
     # Define the training and testing matrices
     x_train = data_set[rand_indices[0:train_size], feature_offset:feature_end]

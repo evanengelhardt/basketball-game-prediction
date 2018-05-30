@@ -118,7 +118,9 @@ def add_team(cnx, cursor, info, year):
 
 
 def get_team(cnx, cursor, year, team):
-    team = var.TEAM_MAP[team]
+    if team in var.TEAM_MAP:
+        team = var.TEAM_MAP[team]
+
     cnx.database = var.DB_NAME
     cursor.execute(var.TEAM_TABLE['select_team'].format(var.SEASON_TABLE_NAME + str(year), team))
     results = cursor.fetchall()

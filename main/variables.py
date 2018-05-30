@@ -1,60 +1,25 @@
+# DATABASE AND TABLE NAMING
 DB_NAME = "nba_db"
 TABLE_NAME_DETAILED = "nba_full_"
 TABLE_NAME_SIMP = "nba_games_"
 SEASON_TABLE_NAME = "nba_stats_"
-isComplex = False
-DAYS_OF_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-TYPE_OF_TABLES = 'season'
+
+
+# MAIN SCRIPT VARIABLES
 GET_DATA = True
 RUN_ALGO = False
 
+
+# WEBSCRAPER CONSTANTS
+DAYS_OF_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 GAME_URL = 'https://www.basketball-reference.com/boxscores/'
 TEAM_URL = 'https://basketball.realgm.com/nba/team-stats/{}/Averages/Team_Totals/Regular_Season'
 OPP_URL = 'https://basketball.realgm.com/nba/team-stats/{}/Averages/Opponent_Totals/Regular_Season'
 
-
-TEAM_MAP = {
-    "Atlanta": "Atlanta",
-    "Boston": "Boston",
-    "Brooklyn": "Brooklyn",
-    "Charlotte": "Charlotte",
-    "Chicago": "Chicago",
-    "Cleveland": "Cleveland",
-    "Dallas": "Dallas",
-    "Denver": "Denver",
-    "Detroit": "Detroit",
-    "Golden State": "Golden State",
-    "Houston": "Houston",
-    "Indiana": "Indiana",
-    "LA Clippers": "L.A. Clippers",
-    "LA Lakers": "L.A. Lakers",
-    "L.A. Clippers": "L.A. Clippers",
-    "L.A. Lakers": "L.A. Lakers",
-    "Memphis": "Memphis",
-    "Miami": "Miami",
-    "Milwaukee": "Milwaukee",
-    "Minnesota": "Minnesota",
-    "New Jersey": "New Jersey",
-    "Seattle": "Seattle",
-    "New Orleans": "New Orleans",
-    "New York": "New York",
-    "Oklahoma City": "Oklahoma City",
-    "Orlando": "Orlando",
-    "Philadelphia": "Philadelphia",
-    "Phoenix": "Phoenix",
-    "Portland": "Portland",
-    "Sacramento": "Sacramento",
-    "San Antonio": "San Antonio",
-    "Toronto": "Toronto",
-    "Utah": "Utah",
-    "Washington": "Washington"
-}
-
-
 START_DATE = {
-    'month': 12,
-    'day': 30,
-    'year': 2010
+    'month': 10,
+    'day': 15,
+    'year': 2000
 }
 
 END_DATE = {
@@ -63,16 +28,28 @@ END_DATE = {
     'year': 2017
 }
 
+
+# ALGORITHM VARIABLES
 ALGORITHM_INFO = {
     'train_size': 4000,
     'test_size': 2000,
-    'epochs': 500,
+    'epochs': 100,
     'learn_step': 0.2,
-    'init_wgt': 0
+    'init_wgt': 0,
+    'feature_offset': 1
 }
 
 
+# MAPPING TEAM NAMES FOR WEBSCRAPER CONFIGURATION
+TEAM_MAP = {
+    "LA Clippers": "L.A. Clippers",
+    "LA Lakers": "L.A. Lakers",
+    "L.A. Clippers": "L.A. Clippers",
+    "L.A. Lakers": "L.A. Lakers"
+}
 
+
+# SQL FUNCTIONS FOR FULL TABLE
 LARGE_TABLE = {
     # Detailed Table Ops
     'create_main_table': (
@@ -133,6 +110,8 @@ LARGE_TABLE = {
 
 }
 
+
+# SQL FUNCTIONS FOR SIMPLE GAME TABLE
 SIMPLE_TABLE = {
     'create_main_table': (
         "CREATE TABLE `{}` ("
@@ -166,6 +145,8 @@ SIMPLE_TABLE = {
 
 }
 
+
+# SQL FUNCTIONS FOR TEAM STAT TABLE
 TEAM_TABLE = {
     'create_team_table': (
         "CREATE TABLE `{}` ("
