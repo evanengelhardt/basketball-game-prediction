@@ -31,7 +31,9 @@ def create_database(cursor, db_name):
 def add_tables(cnx, cursor, db_name, isDetailed, year=None):
     cnx.database = db_name
     if isDetailed:
-        TABLES[var.TABLE_NAME_DETAILED] = var.LARGE_TABLE['create_main_table']
+        TABLES[var.TABLE_NAME_DETAILED] = var.LARGE_TABLE['create_main_table'].format(var.TABLE_NAME_DETAILED
+                                                                                      + str(var.START_DATE['year']) +
+                                                                                      "_" + str(var.END_DATE['year']))
     else:
         TABLES[var.TABLE_NAME_SIMP] = var.SIMPLE_TABLE['create_main_table'].format(var.TABLE_NAME_SIMP + str(year))
     for name, ddl in TABLES.items():
@@ -67,16 +69,30 @@ def add_season_tables(cnx, cursor, db_name, year):
 
 
 def add_game_comp(cnx, cursor, info):
-    cursor.execute(var.LARGE_TABLE['insert_game'], info)
+    cursor.execute(var.LARGE_TABLE['insert_game'].format(var.TABLE_NAME_DETAILED + str(var.START_DATE['year']) + "_"
+                                                         + str(var.END_DATE['year'])), info)
     cnx.commit()
 
 
 def get_games_comp(cnx, cursor):
     cnx.database = var.DB_NAME
-    cursor.execute(var.LARGE_TABLE['select_game'])
+    cursor.execute(var.LARGE_TABLE['select_game'].format(var.TABLE_NAME_DETAILED + str(var.START_DATE['year']) + "_" +
+                                                         str(var.END_DATE['year'])))
     results = cursor.fetchall()
     return results
 
+
+def get_game_by_no(cnx, cursor, game_no, year):
+    cnx.database = var.DB_NAME
+    cursor.execute(var.SIMPLE_TABLE['select_game_no'].format(var.TABLE_NAME_SIMP+str(year), game_no))
+    results = cursor.fetchall()
+    return results[0]
+
+def get_game_count(cnx, cursor, year):
+    cnx.database = var.DB_NAME
+    cursor.execute(var.SIMPLE_TABLE['game_count'].format(var.TABLE_NAME_SIMP + str(year)))
+    results = cursor.fetchall()
+    return results[0][0]
 
 def add_game_simp(cnx, cursor, info, year):
     cursor.execute(var.SIMPLE_TABLE['insert_game'].format(var.TABLE_NAME_SIMP + str(year)), info)
@@ -103,10 +119,11 @@ def add_team(cnx, cursor, info, year):
 
 
 def get_team(cnx, cursor, year, team):
+    team = var.TEAM_MAP[team]
     cnx.database = var.DB_NAME
     cursor.execute(var.TEAM_TABLE['select_team'].format(var.SEASON_TABLE_NAME + str(year), team))
     results = cursor.fetchall()
-    return results
+    return results[0]
 
 
 def close_cnx(cnx, cursor):

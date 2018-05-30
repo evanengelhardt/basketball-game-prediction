@@ -1,5 +1,5 @@
 DB_NAME = "nba_db"
-TABLE_NAME_DETAILED = "nba_table_detail"
+TABLE_NAME_DETAILED = "nba_full_"
 TABLE_NAME_SIMP = "nba_games_"
 SEASON_TABLE_NAME = "nba_stats_"
 isComplex = False
@@ -76,7 +76,7 @@ ALGORITHM_INFO = {
 LARGE_TABLE = {
     # Detailed Table Ops
     'create_main_table': (
-        "CREATE TABLE `" + TABLE_NAME_DETAILED + "` ("
+        "CREATE TABLE `{}` ("
         "   `game_no` int(11) NOT NULL AUTO_INCREMENT,"
         "   `favorite` int NOT NULL,"
         "   `visitor_win_pct` float NOT NULL,"
@@ -108,8 +108,7 @@ LARGE_TABLE = {
         ") ENGINE=InnoDB"
     ),
 
-    'insert_game': ("INSERT INTO " + TABLE_NAME_DETAILED + " (favorite, visitor_win_pct, home_win_pct, visitor_ppg, home_ppg,"
-
+    'insert_game': ("INSERT INTO {} (favorite, visitor_win_pct, home_win_pct, visitor_ppg, home_ppg,"
                                                     " visitor_oppg, home_oppg, visitor_fgp, home_fgp, visitor_ofgp,"
                                                     " home_ofgp, visitor_3fgp, home_3fgp, visitor_o3fgp, home_o3fgp, "
                                                     " visitor_tov, home_tov, visitor_rpg, home_rpg, visitor_apg,"
@@ -122,7 +121,14 @@ LARGE_TABLE = {
                                                 " home_ofgp, visitor_3fgp, home_3fgp, visitor_o3fgp, home_o3fgp, "
                                                 " visitor_tov, home_tov, visitor_rpg, home_rpg, visitor_apg, "
                                                 " home_apg, visitor_spg, home_spg, visitor_bpg, home_bpg, "
-                                                " winner FROM " + TABLE_NAME_DETAILED)
+                                                " winner FROM {}"),
+
+    'select_game_id': ("SELECT favorite, visitor_win_pct, home_win_pct, visitor_ppg, home_ppg,"
+                                                " visitor_oppg, home_oppg, visitor_fgp, home_fgp, visitor_ofgp, "
+                                                " home_ofgp, visitor_3fgp, home_3fgp, visitor_o3fgp, home_o3fgp, "
+                                                " visitor_tov, home_tov, visitor_rpg, home_rpg, visitor_apg, "
+                                                " home_apg, visitor_spg, home_spg, visitor_bpg, home_bpg, "
+                                                " winner FROM {}")
 
 
 }
@@ -151,7 +157,12 @@ SIMPLE_TABLE = {
                                                     " winner) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"),
 
     'select_game': ("SELECT favorite, visitor, home, visitor_win_pct, home_win_pct, visitor_ppg, home_ppg,"
-                                                " visitor_oppg, home_oppg, winner FROM {}")
+                                                " visitor_oppg, home_oppg, winner FROM {}"),
+
+    'select_game_no': ("SELECT favorite, visitor, home, visitor_win_pct, home_win_pct, visitor_ppg, home_ppg,"
+                                                " visitor_oppg, home_oppg, winner FROM {} WHERE game_no = {}"),
+
+    'game_count': ("SELECT COUNT(*) FROM {}")
 
 }
 
