@@ -1,7 +1,7 @@
-import variables as var
-from bs4 import BeautifulSoup as bSoup
-from urllib.request import urlopen as ureq
 from urllib.error import HTTPError as error
+from urllib.request import urlopen as ureq
+
+from bs4 import BeautifulSoup as bSoup
 
 
 def prepare_url(url):

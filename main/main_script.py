@@ -1,7 +1,7 @@
 import algorithms.logistic_main as logistic
-import data_retrieval.database.database_functions as db
 import data_retrieval.data_set_up.data_script as season
-import variables as var
+import data_retrieval.database.database_functions as db
+from main import variables as var
 
 if var.GET_DATA:
     season.run_data_script()

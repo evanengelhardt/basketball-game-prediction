@@ -1,6 +1,6 @@
-import global_functions as g_func
-import variables as var
+import main.global_functions as g_func
 from data_retrieval.database import database_functions as dbs
+from main import variables as var
 
 
 class UrlProcessing:

@@ -1,5 +1,5 @@
-import variables as var
 from data_retrieval.data_set_up.data_processing import UrlProcessing
+from main import variables as var
 
 
 def get_data(cnx, cursor):

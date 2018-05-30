@@ -1,8 +1,7 @@
 import mysql.connector as sql
 from mysql.connector import errorcode
-import config
-import variables as var
 
+from main import variables as var, config
 
 TABLES = {}
 # Simple Table Ops

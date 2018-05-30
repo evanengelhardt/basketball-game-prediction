@@ -1,9 +1,9 @@
 import numpy as np
 
-import config
 import data_retrieval.data_access.dataloader as data
 import evaluation.evaluation_script as eval
 from algorithms.logistic_regression import LogisticRegression
+from main import config
 
 
 def run_logistic_reg(raw_data):

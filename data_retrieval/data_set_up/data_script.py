@@ -1,6 +1,6 @@
-import variables as var
-from data_retrieval.database import database_functions as dbs
 from data_retrieval.data_set_up import data_webscraper as sws
+from data_retrieval.database import database_functions as dbs
+from main import variables as var
 
 
 def run_data_script():
