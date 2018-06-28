@@ -6,8 +6,9 @@ SEASON_TABLE_NAME = "nba_stats_"
 
 
 # MAIN SCRIPT VARIABLES
-GET_DATA = True
-RUN_ALGO = False
+GET_DATA = False
+RUN_ALGO = True
+MERGE_DATA = False
 
 
 # WEBSCRAPER CONSTANTS
@@ -31,12 +32,12 @@ END_DATE = {
 
 # ALGORITHM VARIABLES
 ALGORITHM_INFO = {
-    'train_size': 4000,
+    'train_size': 8000,
     'test_size': 2000,
     'epochs': 100,
     'learn_step': 0.2,
     'init_wgt': 0,
-    'feature_offset': 1
+    'feature_offset': 3
 }
 
 
@@ -45,7 +46,8 @@ TEAM_MAP = {
     "LA Clippers": "L.A. Clippers",
     "LA Lakers": "L.A. Lakers",
     "L.A. Clippers": "L.A. Clippers",
-    "L.A. Lakers": "L.A. Lakers"
+    "L.A. Lakers": "L.A. Lakers",
+    "New Orleans/Oklahoma City": "New Orleans"
 }
 
 

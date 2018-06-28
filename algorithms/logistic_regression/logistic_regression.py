@@ -11,7 +11,7 @@ class LogisticRegression:
     def predict(self, x_test):
         y_test = np.dot(x_test, self.weights)
         for i in range(len(y_test)):
-            if self.sigmoid(y_test[i]) > .5:
+            if self.sigmoid(y_test[i]) > .7:
                 y_test[i] = 1
             else:
                 y_test[i] = 0

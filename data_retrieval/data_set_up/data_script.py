@@ -10,11 +10,14 @@ def run_data_script():
     dbs.create_database(cursor, var.DB_NAME)
     print("Adding New Data in table: " + var.TABLE_NAME_SIMP)
     sws.get_data(cnx, cursor)
-    combine_data(cnx, cursor)
+
+    if var.MERGE_DATA:
+        combine_data(cnx, cursor)
+
     dbs.close_cnx(cnx, cursor)
 
 
-def combine_data(cnx,cursor):
+def combine_data(cnx, cursor):
     dbs.add_tables(cnx, cursor, var.DB_NAME, True)
     curr_year = var.START_DATE['year'] + 1
 
