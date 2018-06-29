@@ -74,6 +74,7 @@ def add_game_comp(cnx, cursor, info):
 
 
 def get_games_comp(cnx, cursor):
+    print("Getting all data from database")
     cnx.database = var.DB_NAME
     cursor.execute(var.LARGE_TABLE['select_game'].format(var.TABLE_NAME_DETAILED + str(var.START_DATE['year']) + "_" +
                                                          str(var.END_DATE['year'])))
